@@ -14,7 +14,10 @@ import java.util.Date;
 
 public class App {
     public static void main(String[] args) throws Exception {
-
+        AnnotationConfigApplicationContext applicationContext =
+        new AnnotationConfigApplicationContext(SpringConfig.class);
+        Parser parser = applicationContext.getBean("parser", Parser.class);
+        parser.getPage();
 
     }
 }

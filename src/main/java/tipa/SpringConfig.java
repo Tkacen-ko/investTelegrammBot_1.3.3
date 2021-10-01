@@ -9,7 +9,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan("tipa")
+@ComponentScan
 public class SpringConfig {
     @Bean
     public DataSource dataSource(){
@@ -24,5 +24,10 @@ public class SpringConfig {
     @Bean
     public JdbcTemplate jdbcTemplate(){
         return new JdbcTemplate(dataSource());
-    };
+    }
+    @Bean
+    public Parser parser(){
+        return new Parser(jdbcTemplate());
+    }
+
 }
