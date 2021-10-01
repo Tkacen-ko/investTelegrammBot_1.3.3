@@ -1,11 +1,14 @@
 package tipa;
 
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 public class App {
     private final JdbcTemplate jdbcTemplate;
@@ -20,10 +23,24 @@ public class App {
                 Collection <String> sti = new ArrayList<>();
                 Element e = Parser.getPage().get(i);
                 if (e.select("td").size() == 20) {
-                    for(Element td : e.select("td")){
-                        sti.add(td.text());
+                    Date date=new SimpleDateFormat("dd:MM:yyyy").parse(e.select("td").get(1).text());
+                    jdbcTemplate.update("INSERT INTO smart_lab_db VALUE()");
+                    for (int j = 0; j < 20; j++) {
+
+                        jdbcTemplate.update("INSERT INTO smart_lab_db VALUE ")
+                        System.out.print(e.select("td").get(j).text()+"");
                     }
-                    mass.add(sti);
+                    System.out.println();
+//                for(Element td : e.select("td")){
+//                    String t =  td.text();
+//                    System.out.println("Сейчас в стринге: "+ t);
+//                }
+
+
+//                    for(Element td : e.select("td")){
+//                        sti.add(td.text());
+//                    }
+//                    mass.add(sti);
                 }
             }
         }
