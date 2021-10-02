@@ -46,7 +46,6 @@ public class Parser {
                 String ss = date.format(dateNow).toString();
                 if (e.select("td").size() == 18) {
                     //Date date=new SimpleDateFormat("dd:MM:yyyy").parse(e.select("td").get(1).text());
-
                     jdbcTemplate.update("INSERT INTO alldatatiket VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                             i,
                             e.select("td").get(1).text(),

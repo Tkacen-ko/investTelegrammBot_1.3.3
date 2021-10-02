@@ -15,10 +15,10 @@ public class SpringConfig {
     @Bean
     public DataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/smart_lab_db");
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("WUxM>Pf3");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/smart_lab_db?serverTimezone=Europe/Moscow");
+        dataSource.setUsername("Router");
+        dataSource.setPassword("coZ&rma6/Lrm");
         return dataSource;
     }
 
