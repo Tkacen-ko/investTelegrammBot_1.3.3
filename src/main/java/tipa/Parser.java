@@ -25,7 +25,7 @@ public class Parser {
     private static final Date nowDate = new Date();
     static {
         try {
-            dateStart = new SimpleDateFormat("dd.MM.yyyy").parse("01.01.2018");
+            dateStart = new SimpleDateFormat("dd.MM.yyyy").parse("01.01.2016");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -39,6 +39,7 @@ public class Parser {
 
     public void getPage() throws Exception {
         while (true) {
+            System.out.println("\n\nI work by "+dateDataBD+"\n\n");
             String url = getUrl();
             if (url.length() == 0) {
                 break;
@@ -83,45 +84,41 @@ public class Parser {
             return null;
         }
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat formatForDateNow2 = new SimpleDateFormat("yyyy-MM-dd");
         String urlForReturn = urdSmarlLabNoDate + formatForDateNow.format(dateStart);
         Calendar instance = Calendar.getInstance();
         instance.setTime(dateStart);
         instance.add(Calendar.DAY_OF_MONTH, 1);
-        dateDataBD = formatForDateNow.format(dateStart);
-        System.out.println(dateDataBD);
+        dateDataBD = formatForDateNow2.format(dateStart);
         dateStart = instance.getTime();
         return urlForReturn;
     }
     public void createTable(Element elTd, String url){
         try {
             jdbcTemplate.execute("create table "+elTd.select("td").get(2).text()+"Ticet (" +
-                    "    dateData data," +
-                    "    name character varying(255)," +
-                    "    tiket character varying(255)," +
-                    "    price numeric," +
-                    "    capitalizationrub numeric," +
-                    "    capitalizationdollars numeric," +
-                    "    changesday numeric," +
-                    "    changesweek numeric," +
-                    "    changesmonth numeric," +
-                    "    changesyear numeric" +
+                    "    data date PRIMARY KEY," +
+                    "    price DOUBLE," +
+                    "    capitalizationmlrdru DOUBLE," +
+                    "    capitalizationmlrddollars DOUBLE," +
+                    "    changesday DOUBLE," +
+                    "    changesweek DOUBLE," +
+                    "    changesmonth DOUBLE," +
+                    "    changesyear DOUBLE" +
                     ")");
         }
         catch (Exception e){
-                        jdbcTemplate.update("INSERT INTO "+ elTd.select("td").get(2).text()+"Ticet VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                                elTd.select(dateDataBD),
-                                elTd.select("td").get(1).text(),
-                                elTd.select("td").get(2).text(),
+                        jdbcTemplate.update("INSERT INTO "+ elTd.select("td").get(2).text()+"Ticet VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+                                dateDataBD,
                                 ingratro(elTd.select("td").get(6).text()),
                                 ingratro(elTd.select("td").get(13).text()),
                                 ingratro(elTd.select("td").get(14).text()),
-
                                 ingratro(elTd.select("td").get(7).text()),
                                 ingratro(elTd.select("td").get(9).text()),
                                 ingratro(elTd.select("td").get(10).text()),
                                 ingratro(elTd.select("td").get(12).text())
                         );
         }
+
     }
 }
 

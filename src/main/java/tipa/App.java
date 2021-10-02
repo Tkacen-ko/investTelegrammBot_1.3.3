@@ -15,11 +15,18 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class App {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         AnnotationConfigApplicationContext applicationContext =
         new AnnotationConfigApplicationContext(SpringConfig.class);
         Parser parser = applicationContext.getBean("parser", Parser.class);
-        parser.getPage();
+        try {
+            parser.getPage();
+        }catch (Exception e){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+            }
+        }
 
     }
 }
