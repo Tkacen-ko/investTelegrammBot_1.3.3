@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan
 public class SpringConfig {
+
     @Bean
     public DataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -25,6 +26,7 @@ public class SpringConfig {
     public JdbcTemplate jdbcTemplate(){
         return new JdbcTemplate(dataSource());
     }
+
     @Bean
     public Parser parser(){
         return new Parser(jdbcTemplate());

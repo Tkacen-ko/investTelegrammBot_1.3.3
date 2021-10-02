@@ -72,6 +72,6 @@ public class Parser {
                 interruptedException.printStackTrace();
             }
         }
-    };
+    }
 }
 
