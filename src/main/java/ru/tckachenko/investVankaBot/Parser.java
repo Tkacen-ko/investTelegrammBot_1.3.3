@@ -1,20 +1,17 @@
-package tipa;
+package ru.tckachenko.investVankaBot;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
-
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 
 @ComponentScan("parser")
@@ -25,7 +22,7 @@ public class Parser {
     private static final Date nowDate = new Date();
     static {
         try {
-            dateStart = new SimpleDateFormat("dd.MM.yyyy").parse("01.01.2016");
+            dateStart = new SimpleDateFormat("dd.MM.yyyy").parse("23.06.2016");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -54,28 +51,31 @@ public class Parser {
                 for (int i = 1; i <= el2.size()-1; i++) {
                     Element e = el2.get(i);
                     if (e.select("td").size() == 18) {
-                        createTable(e, url);
+                        createTable(e);
                     }
                 }
-                System.out.println();
             } catch (Exception e) {
-                System.out.println("!!! \nВнимание я влетел в блок иключения\n");
+                System.out.println(" \n\n!!!\nВнимание я влетел в блок иключения");
                 e.printStackTrace();
+                for(Element el : el2){
+                    System.out.println(el.text());
+                }
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException interruptedException) {
                     interruptedException.printStackTrace();
                 }
             }
         }
     }
+
     // метод для чистки значений от лишних знаков
     public Double ingratro(String s) {
         if (s.length() != 0) {
-            System.out.println(s.replaceAll("[% ]", ""));
+            System.out.println(s.replaceAll("[+% ]", ""));
             return Double.parseDouble(s.replaceAll("[% ]", ""));
         }
-        return 0.000;
+        return 000.000;
     }
 
     // метод предоставляющий ссылку URL для считывания данных
@@ -93,9 +93,13 @@ public class Parser {
         dateStart = instance.getTime();
         return urlForReturn;
     }
-    public void createTable(Element elTd, String url){
+
+    public void createTable(Element elTd){
+        if(elTd.select("td").get(2).text().length()==0){
+            return;
+        }
         try {
-            jdbcTemplate.execute("create table "+elTd.select("td").get(2).text()+"Ticet (" +
+            jdbcTemplate.execute("create table "+elTd.select("td").get(2).text()+" (" +
                     "    data date PRIMARY KEY," +
                     "    price DOUBLE," +
                     "    capitalizationmlrdru DOUBLE," +
@@ -107,16 +111,25 @@ public class Parser {
                     ")");
         }
         catch (Exception e){
-                        jdbcTemplate.update("INSERT INTO "+ elTd.select("td").get(2).text()+"Ticet VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
-                                dateDataBD,
-                                ingratro(elTd.select("td").get(6).text()),
-                                ingratro(elTd.select("td").get(13).text()),
-                                ingratro(elTd.select("td").get(14).text()),
-                                ingratro(elTd.select("td").get(7).text()),
-                                ingratro(elTd.select("td").get(9).text()),
-                                ingratro(elTd.select("td").get(10).text()),
-                                ingratro(elTd.select("td").get(12).text())
-                        );
+            saveDataDb(elTd);
+        }
+    }
+
+
+    public void saveDataDb(Element elTd){
+        try {
+            jdbcTemplate.update("INSERT INTO "+ elTd.select("td").get(2).text()+" VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+                    dateDataBD,
+                    ingratro(elTd.select("td").get(6).text())==000.000?null:ingratro(elTd.select("td").get(6).text()),
+                    ingratro(elTd.select("td").get(13).text())==000.00?null:ingratro(elTd.select("td").get(6).text()),
+                    ingratro(elTd.select("td").get(14).text())==000.00?null:ingratro(elTd.select("td").get(6).text()),
+                    ingratro(elTd.select("td").get(7).text())==000.00?null:ingratro(elTd.select("td").get(6).text()),
+                    ingratro(elTd.select("td").get(9).text())==000.00?null:ingratro(elTd.select("td").get(6).text()),
+                    ingratro(elTd.select("td").get(10).text())==000.00?null:ingratro(elTd.select("td").get(6).text()),
+                    ingratro(elTd.select("td").get(12).text())==000.00?null:ingratro(elTd.select("td").get(6).text())
+            );
+        }catch (DuplicateKeyException e){
+            System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\nЗначение под датой "+dateDataBD+" уже существует в БД\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
         }
 
     }

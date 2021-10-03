@@ -1,18 +1,7 @@
-package tipa;
+package ru.tckachenko.investVankaBot;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
+import ru.tckachenko.investVankaBot.config.SpringConfig;
 
 public class App {
     public static void main(String[] args) {

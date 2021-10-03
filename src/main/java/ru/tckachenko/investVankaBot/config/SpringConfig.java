@@ -1,10 +1,11 @@
-package tipa;
+package ru.tckachenko.investVankaBot.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import ru.tckachenko.investVankaBot.Parser;
 
 import javax.sql.DataSource;
 
