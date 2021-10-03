@@ -1,4 +1,4 @@
-package ru.tckachenko.investVankaBot;
+package ru.tckachenko.investVankaBot.workingByDatabase;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,12 +14,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-@ComponentScan("parser")
-public class Parser {
+@ComponentScan("loadingHistoricalData")
+public class LoadingHistoricalData {
     public static final String urdSmarlLabNoDate = "https://smart-lab.ru/q/shares/order_by_issue_capitalization/desc/?date=";
     private static Date dateStart;
     private static String dateDataBD;
     private static final Date nowDate = new Date();
+    private final JdbcTemplate jdbcTemplate;
+
     static {
         try {
             dateStart = new SimpleDateFormat("dd.MM.yyyy").parse("23.06.2016");
@@ -28,9 +30,8 @@ public class Parser {
         }
     }
 
-    private final JdbcTemplate jdbcTemplate;
     @Autowired
-    public Parser(JdbcTemplate jdbcTemplate) {
+    public LoadingHistoricalData(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

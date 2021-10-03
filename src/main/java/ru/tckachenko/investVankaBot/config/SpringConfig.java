@@ -5,14 +5,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import ru.tckachenko.investVankaBot.Parser;
+import ru.tckachenko.investVankaBot.workingByDatabase.LoadingHistoricalData;
+
 
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan
+@ComponentScan("ru.tckachenko.investVankaBot.config")
 public class SpringConfig {
-
     @Bean
     public DataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -29,8 +29,8 @@ public class SpringConfig {
     }
 
     @Bean
-    public Parser parser(){
-        return new Parser(jdbcTemplate());
+    public LoadingHistoricalData parser(){
+        return new LoadingHistoricalData(jdbcTemplate());
     }
 
 }

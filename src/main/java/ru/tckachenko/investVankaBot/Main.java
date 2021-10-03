@@ -2,20 +2,20 @@ package ru.tckachenko.investVankaBot;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.tckachenko.investVankaBot.config.SpringConfig;
+import ru.tckachenko.investVankaBot.workingByDatabase.LoadingHistoricalData;
 
-public class App {
+public class Main {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext applicationContext =
         new AnnotationConfigApplicationContext(SpringConfig.class);
-        Parser parser = applicationContext.getBean("parser", Parser.class);
+        LoadingHistoricalData loadingHistoricalData = applicationContext.getBean("parser", LoadingHistoricalData.class);
         try {
-            parser.getPage();
+            loadingHistoricalData.getPage();
         }catch (Exception e){
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
             }
         }
-
     }
 }
