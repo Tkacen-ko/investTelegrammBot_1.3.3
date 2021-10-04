@@ -4,6 +4,11 @@ import org.jsoup.nodes.Element;
 
 public class LoadingTodayData extends BasicLoadingFunctionalityBd {
     @Override
+    public boolean dataBDLoadStarter() {
+        return false;
+    }
+
+    @Override
     public void createTable(Element elTd) {
 
     }

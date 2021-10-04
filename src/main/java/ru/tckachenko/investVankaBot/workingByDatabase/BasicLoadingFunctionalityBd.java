@@ -8,10 +8,11 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.SQLOutput;
 
 public abstract class BasicLoadingFunctionalityBd implements RequestsBDInterface {
     String url;
-    int numberlColumsForParsing;
+    public int numberlColumsForParsing;
 
 
     public Elements siteDataParser(){
@@ -31,25 +32,25 @@ public abstract class BasicLoadingFunctionalityBd implements RequestsBDInterface
     }
 
     public void saitDataLoadDb(){
-        while (true) {
+        do {
             Elements allLines = siteDataParser();
             try {
                 for (int i = 1; i <= allLines.size() - 1; i++) {
-                    if (allLines.select("table[class=simple-little-table trades-table]").first().getElementsByTag("tr").size() == 1) {
-                        continue;
-                    }
                     Element line = allLines.get(i);
                     if (line.select("td").size() == numberlColumsForParsing) {
                         createTable(line);
                     }
                 }
             } catch (Exception e) {
-                System.out.println(" \n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nВнимание я влетел в блок иключения\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+                System.out.println("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nВнимание я влетел в блок иключения\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n");
+                e.printStackTrace();
             }
         }
+        while (dataBDLoadStarter());
     }
+    public abstract boolean dataBDLoadStarter();
     public abstract void createTable(Element elTd);
     public abstract void saveDataTable(Element elTd);
-
     public abstract String setUrl();
+
 }

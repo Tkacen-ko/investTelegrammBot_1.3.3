@@ -1,18 +1,10 @@
 package ru.tckachenko.investVankaBot.workingByDatabase;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.SqlOutParameter;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,11 +17,13 @@ public class LoadingHistoricalData extends BasicLoadingFunctionalityBd{
     private static String dateDataBD;
     private static final Date nowDate = new Date();
     private final JdbcTemplate jdbcTemplate;
-    private final int numberlColumsForParsing = 18;
+    {
+        numberlColumsForParsing = 18;
+    }
 
     static {
         try {
-            dateStart = new SimpleDateFormat("dd.MM.yyyy").parse("23.06.2016");
+            dateStart = new SimpleDateFormat("dd.MM.yyyy").parse("20.09.2021");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -93,16 +87,22 @@ public class LoadingHistoricalData extends BasicLoadingFunctionalityBd{
             jdbcTemplate.update("INSERT INTO "+ elTd.select("td").get(2).text()+" VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
                     dateDataBD,
                     ingratro(elTd.select("td").get(6).text())==000.000?null:ingratro(elTd.select("td").get(6).text()),
-                    ingratro(elTd.select("td").get(13).text())==000.00?null:ingratro(elTd.select("td").get(6).text()),
-                    ingratro(elTd.select("td").get(14).text())==000.00?null:ingratro(elTd.select("td").get(6).text()),
-                    ingratro(elTd.select("td").get(7).text())==000.00?null:ingratro(elTd.select("td").get(6).text()),
-                    ingratro(elTd.select("td").get(9).text())==000.00?null:ingratro(elTd.select("td").get(6).text()),
-                    ingratro(elTd.select("td").get(10).text())==000.00?null:ingratro(elTd.select("td").get(6).text()),
-                    ingratro(elTd.select("td").get(12).text())==000.00?null:ingratro(elTd.select("td").get(6).text())
+                    ingratro(elTd.select("td").get(13).text())==000.00?null:ingratro(elTd.select("td").get(13).text()),
+                    ingratro(elTd.select("td").get(14).text())==000.00?null:ingratro(elTd.select("td").get(14).text()),
+                    ingratro(elTd.select("td").get(7).text())==000.00?null:ingratro(elTd.select("td").get(7).text()),
+                    ingratro(elTd.select("td").get(9).text())==000.00?null:ingratro(elTd.select("td").get(9).text()),
+                    ingratro(elTd.select("td").get(10).text())==000.00?null:ingratro(elTd.select("td").get(10).text()),
+                    ingratro(elTd.select("td").get(12).text())==000.00?null:ingratro(elTd.select("td").get(12).text())
             );
         }catch (DuplicateKeyException e){
             System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\nЗначение под датой "+dateDataBD+" уже существует в БД\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
         }
+    }
+    public boolean dataBDLoadStarter() {
+        SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy");
+        String newTimeDite = formatForDateNow.format(new Date());
+        System.out.println("В данный момент я работаю с датой "+ dateStart);
+        return !(dateStart.equals(newTimeDite));
     }
 }
 
