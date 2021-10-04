@@ -8,9 +8,9 @@ public class Main {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext applicationContext =
         new AnnotationConfigApplicationContext(SpringConfig.class);
-        LoadingHistoricalData loadingHistoricalData = applicationContext.getBean("parser", LoadingHistoricalData.class);
+        LoadingHistoricalData loadingHistoricalData = applicationContext.getBean("loadingHistoricalData", LoadingHistoricalData.class);
         try {
-            loadingHistoricalData.getPage();
+            loadingHistoricalData.saitDataLoadDb();
         }catch (Exception e){
             try {
                 Thread.sleep(1000);

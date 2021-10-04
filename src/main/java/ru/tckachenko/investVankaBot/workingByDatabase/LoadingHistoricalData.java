@@ -8,19 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlOutParameter;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-@ComponentScan("loadingHistoricalData")
-public class LoadingHistoricalData {
-    public static final String urdSmarlLabNoDate = "https://smart-lab.ru/q/shares/order_by_issue_capitalization/desc/?date=";
+@ComponentScan
+public class LoadingHistoricalData extends BasicLoadingFunctionalityBd{
+    public static final String url = "https://smart-lab.ru/q/shares/order_by_issue_capitalization/desc/?date=";
     private static Date dateStart;
     private static String dateDataBD;
     private static final Date nowDate = new Date();
     private final JdbcTemplate jdbcTemplate;
+    private final int numberlColumsForParsing = 18;
 
     static {
         try {
@@ -35,41 +40,6 @@ public class LoadingHistoricalData {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void getPage() throws Exception {
-        while (true) {
-            System.out.println("\n\nI work by "+dateDataBD+"\n\n");
-            String url = getUrl();
-            if (url.length() == 0) {
-                break;
-            }
-            Document page = Jsoup.parse(new URL(url), 3000);
-            if (page.select("table[class=simple-little-table trades-table]").first().getElementsByTag("tr").size() == 1) {
-                continue;
-            }
-            Element table = page.select("table[class=simple-little-table trades-table]").first();
-            Elements el2 = table.getElementsByTag("tr");
-            try {
-                for (int i = 1; i <= el2.size()-1; i++) {
-                    Element e = el2.get(i);
-                    if (e.select("td").size() == 18) {
-                        createTable(e);
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println(" \n\n!!!\nВнимание я влетел в блок иключения");
-                e.printStackTrace();
-                for(Element el : el2){
-                    System.out.println(el.text());
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
-            }
-        }
-    }
-
     // метод для чистки значений от лишних знаков
     public Double ingratro(String s) {
         if (s.length() != 0) {
@@ -80,13 +50,14 @@ public class LoadingHistoricalData {
     }
 
     // метод предоставляющий ссылку URL для считывания данных
-    public String getUrl() {
+    @Override
+    public String setUrl() {
         if (dateStart.toString().equals(nowDate.toString())) {
             return null;
         }
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy");
         SimpleDateFormat formatForDateNow2 = new SimpleDateFormat("yyyy-MM-dd");
-        String urlForReturn = urdSmarlLabNoDate + formatForDateNow.format(dateStart);
+        String urlForReturn = url + formatForDateNow.format(dateStart);
         Calendar instance = Calendar.getInstance();
         instance.setTime(dateStart);
         instance.add(Calendar.DAY_OF_MONTH, 1);
@@ -112,12 +83,12 @@ public class LoadingHistoricalData {
                     ")");
         }
         catch (Exception e){
-            saveDataDb(elTd);
+            saveDataTable(elTd);
         }
     }
 
 
-    public void saveDataDb(Element elTd){
+    public void saveDataTable(Element elTd){
         try {
             jdbcTemplate.update("INSERT INTO "+ elTd.select("td").get(2).text()+" VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
                     dateDataBD,
@@ -132,7 +103,6 @@ public class LoadingHistoricalData {
         }catch (DuplicateKeyException e){
             System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\nЗначение под датой "+dateDataBD+" уже существует в БД\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
         }
-
     }
 }
 

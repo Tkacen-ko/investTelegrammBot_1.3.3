@@ -29,8 +29,7 @@ public class SpringConfig {
     }
 
     @Bean
-    public LoadingHistoricalData parser(){
+    public LoadingHistoricalData loadingHistoricalData(){
         return new LoadingHistoricalData(jdbcTemplate());
     }
-
 }
