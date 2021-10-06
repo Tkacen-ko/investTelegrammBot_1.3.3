@@ -25,7 +25,7 @@ public abstract class BasicLoadingFunctionalityBd implements RequestsBDInterface
             try {
                 page = Jsoup.parse(new URL(trueUrl), 3000);
             }catch (IOException e){
-                System.out.println("Судя по всему интернет пошёл по пизде");
+                return null;
             }
             Element table = page.select("table[class=simple-little-table trades-table]").first();
             return table.getElementsByTag("tr");
@@ -33,7 +33,23 @@ public abstract class BasicLoadingFunctionalityBd implements RequestsBDInterface
 
     public void saitDataLoadDb(){
         do {
+            if(siteDataParser()==null){
+                for (int i = 0; i < 100; i++) {
+                    System.out.println("Судя по всему интернет пошёл по пизде");
+                    if (siteDataParser()!=null) break;
+                    if (i == 99){
+                        System.out.println("По причине отсутствия интернета в течении дохуилиона часов, программа , сейчас будет завершена");
+                    }
+                    try {
+                        Thread.sleep(3000);
+                    }
+                    catch (Exception e){
+
+                    }
+                }
+            }
             Elements allLines = siteDataParser();
+            if(allLines.size()==1) System.out.println("Данных на этот день: " +getDateStart() +" нет");
             try {
                 for (int i = 1; i <= allLines.size() - 1; i++) {
                     Element line = allLines.get(i);
@@ -52,5 +68,5 @@ public abstract class BasicLoadingFunctionalityBd implements RequestsBDInterface
     public abstract void createTable(Element elTd);
     public abstract void saveDataTable(Element elTd);
     public abstract String setUrl();
-
+    public abstract String  getDateStart();
 }

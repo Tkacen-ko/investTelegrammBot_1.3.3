@@ -19,11 +19,12 @@ public class LoadingHistoricalData extends BasicLoadingFunctionalityBd{
     private final JdbcTemplate jdbcTemplate;
     {
         numberlColumsForParsing = 18;
+
     }
 
     static {
         try {
-            dateStart = new SimpleDateFormat("dd.MM.yyyy").parse("20.09.2021");
+            dateStart = new SimpleDateFormat("dd.MM.yyyy").parse("18.11.2015");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -101,8 +102,19 @@ public class LoadingHistoricalData extends BasicLoadingFunctionalityBd{
     public boolean dataBDLoadStarter() {
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy");
         String newTimeDite = formatForDateNow.format(new Date());
-        System.out.println("В данный момент я работаю с датой "+ dateStart);
-        return !(dateStart.equals(newTimeDite));
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(dateStart);
+        instance.add(Calendar.DAY_OF_MONTH, -1);
+        Date dateToCheck = instance.getTime();
+        String dataStartTrueFormat = formatForDateNow.format(dateToCheck);
+        if (newTimeDite.equals(dataStartTrueFormat)) {
+            System.out.println("Программа записала все данные за указанный период\nПрограмма завершена");
+        }
+        return !(newTimeDite.equals(dataStartTrueFormat));
+    }
+    public String getDateStart(){
+        SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy");
+        return formatForDateNow.format(dateStart);
     }
 }
 

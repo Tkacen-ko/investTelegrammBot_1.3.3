@@ -22,4 +22,9 @@ public class LoadingTodayData extends BasicLoadingFunctionalityBd {
     public String setUrl() {
         return null;
     }
+
+    @Override
+    public String  getDateStart(){
+        return null;
+    }
 }

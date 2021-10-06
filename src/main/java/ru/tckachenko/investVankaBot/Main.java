@@ -17,7 +17,7 @@ public class Main {
             loadingHistoricalData.saitDataLoadDb();
         }catch (Exception e){
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1);
             } catch (InterruptedException ex) {
             }
         }
