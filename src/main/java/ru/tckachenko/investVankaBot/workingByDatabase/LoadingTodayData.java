@@ -2,7 +2,15 @@ package ru.tckachenko.investVankaBot.workingByDatabase;
 
 import org.jsoup.nodes.Element;
 
+import java.util.Date;
+
 public class LoadingTodayData extends BasicLoadingFunctionalityBd {
+
+    // неиспользуемый в данной реализации метод, нужно затереть из родительского класса!!!
+    @Override
+    public void changeDateStart() {
+    }
+
     @Override
     public boolean dataBDLoadStarter() {
         return false;

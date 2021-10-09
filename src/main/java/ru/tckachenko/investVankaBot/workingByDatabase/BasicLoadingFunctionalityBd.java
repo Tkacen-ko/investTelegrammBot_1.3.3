@@ -6,13 +6,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.SQLOutput;
+
 
 public abstract class BasicLoadingFunctionalityBd implements RequestsBDInterface {
-    String url;
     public int numberlColumsForParsing;
+
 
 
     public Elements siteDataParser(){
@@ -21,7 +20,7 @@ public abstract class BasicLoadingFunctionalityBd implements RequestsBDInterface
             if (trueUrl.length() == 0) {
                 return null;
             }
-            Document page = null;
+            Document page;
             try {
                 page = Jsoup.parse(new URL(trueUrl), 3000);
             }catch (IOException e){
@@ -32,6 +31,7 @@ public abstract class BasicLoadingFunctionalityBd implements RequestsBDInterface
     }
 
     public void saitDataLoadDb(){
+        try {
         do {
             if(siteDataParser()==null){
                 for (int i = 0; i < 100; i++) {
@@ -49,7 +49,9 @@ public abstract class BasicLoadingFunctionalityBd implements RequestsBDInterface
                 }
             }
             Elements allLines = siteDataParser();
-            if(allLines.size()==1) System.out.println("Данных на этот день: " +getDateStart() +" нет");
+            if(allLines.size()==1){
+                System.out.println("Данных на этот день: " +getDateStart() +" нет");
+            }
             try {
                 for (int i = 1; i <= allLines.size() - 1; i++) {
                     Element line = allLines.get(i);
@@ -57,16 +59,26 @@ public abstract class BasicLoadingFunctionalityBd implements RequestsBDInterface
                         createTable(line);
                     }
                 }
+                changeDateStart();
+                System.out.println("Я отработал ещё одну итерацию цикла, послю 3 секундочки");
+                System.out.println();
+                Thread.sleep((int)((Math.random() * ((3000 - 1) + 1)) + 1));
             } catch (Exception e) {
                 System.out.println("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nВнимание я влетел в блок иключения\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n");
                 e.printStackTrace();
             }
         }
         while (dataBDLoadStarter());
+        }
+        finally {
+            changeDateStart();
+        }
     }
+    public abstract void changeDateStart();
     public abstract boolean dataBDLoadStarter();
     public abstract void createTable(Element elTd);
     public abstract void saveDataTable(Element elTd);
     public abstract String setUrl();
     public abstract String  getDateStart();
+
 }

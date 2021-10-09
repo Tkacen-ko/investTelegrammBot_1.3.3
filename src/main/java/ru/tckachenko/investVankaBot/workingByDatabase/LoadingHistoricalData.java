@@ -14,20 +14,19 @@ import java.util.Date;
 public class LoadingHistoricalData extends BasicLoadingFunctionalityBd{
     public static final String url = "https://smart-lab.ru/q/shares/order_by_issue_capitalization/desc/?date=";
     private static Date dateStart;
-    private static String dateDataBD;
+    private static String dateFormatToBD = "17.07.2018"; // Дата для старта анализа
     private static final Date nowDate = new Date();
     private final JdbcTemplate jdbcTemplate;
-    {
-        numberlColumsForParsing = 18;
-
-    }
 
     static {
         try {
-            dateStart = new SimpleDateFormat("dd.MM.yyyy").parse("18.11.2015");
+            dateStart = new SimpleDateFormat("dd.MM.yyyy").parse(dateFormatToBD);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+    {
+        numberlColumsForParsing = 18;
     }
 
     @Autowired
@@ -51,14 +50,17 @@ public class LoadingHistoricalData extends BasicLoadingFunctionalityBd{
             return null;
         }
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("dd.MM.yyyy");
-        SimpleDateFormat formatForDateNow2 = new SimpleDateFormat("yyyy-MM-dd");
         String urlForReturn = url + formatForDateNow.format(dateStart);
+        return urlForReturn;
+    }
+
+    public void changeDateStart(){
+        SimpleDateFormat formatForDateNow2 = new SimpleDateFormat("yyyy-MM-dd");
         Calendar instance = Calendar.getInstance();
         instance.setTime(dateStart);
         instance.add(Calendar.DAY_OF_MONTH, 1);
-        dateDataBD = formatForDateNow2.format(dateStart);
+        dateFormatToBD = formatForDateNow2.format(dateStart);
         dateStart = instance.getTime();
-        return urlForReturn;
     }
 
     public void createTable(Element elTd){
@@ -86,7 +88,7 @@ public class LoadingHistoricalData extends BasicLoadingFunctionalityBd{
     public void saveDataTable(Element elTd){
         try {
             jdbcTemplate.update("INSERT INTO "+ elTd.select("td").get(2).text()+" VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
-                    dateDataBD,
+                    dateFormatToBD,
                     ingratro(elTd.select("td").get(6).text())==000.000?null:ingratro(elTd.select("td").get(6).text()),
                     ingratro(elTd.select("td").get(13).text())==000.00?null:ingratro(elTd.select("td").get(13).text()),
                     ingratro(elTd.select("td").get(14).text())==000.00?null:ingratro(elTd.select("td").get(14).text()),
@@ -95,8 +97,8 @@ public class LoadingHistoricalData extends BasicLoadingFunctionalityBd{
                     ingratro(elTd.select("td").get(10).text())==000.00?null:ingratro(elTd.select("td").get(10).text()),
                     ingratro(elTd.select("td").get(12).text())==000.00?null:ingratro(elTd.select("td").get(12).text())
             );
-        }catch (DuplicateKeyException e){
-            System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\nЗначение под датой "+dateDataBD+" уже существует в БД\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+            }catch (DuplicateKeyException e){
+            System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\nЗначение под датой "+dateFormatToBD+" уже существует в БД\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
         }
     }
     public boolean dataBDLoadStarter() {
