@@ -1,11 +1,18 @@
 package ru.tckachenko.investVankaBot.config;
 
+import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import ru.tckachenko.investVankaBot.workingByDatabase.LoadingHistoricalData;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import ru.tckachenko.investVankaBot.bot.ReactionToMessage;
+import ru.tckachenko.investVankaBot.bot.SendMessageUserTelegtam;
+import ru.tckachenko.investVankaBot.workingByDatabase.writingDatabase.LoadingHistoricalData;
+import ru.tckachenko.investVankaBot.workingByDatabase.writingDatabase.LoadingTodayData;
 
 
 import javax.sql.DataSource;
@@ -32,4 +39,15 @@ public class SpringConfig {
     public LoadingHistoricalData loadingHistoricalData(){
         return new LoadingHistoricalData(jdbcTemplate());
     }
+
+    @Bean
+    public LoadingTodayData loadingTodayData(){
+        return new LoadingTodayData(jdbcTemplate());
+    }
+
+    @Bean
+    public DefaultBotOptions defaultBotOptions(){return new DefaultBotOptions();}
+
+    @Bean
+    public SendMessageUserTelegtam sendMessageUserTelegtam(){ return new SendMessageUserTelegtam(defaultBotOptions());}
 }

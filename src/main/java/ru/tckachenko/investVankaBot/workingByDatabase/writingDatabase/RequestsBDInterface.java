@@ -1,4 +1,4 @@
-package ru.tckachenko.investVankaBot.workingByDatabase;
+package ru.tckachenko.investVankaBot.workingByDatabase.writingDatabase;
 
 import org.jsoup.nodes.Element;
 

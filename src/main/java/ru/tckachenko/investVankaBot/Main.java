@@ -1,25 +1,24 @@
 package ru.tckachenko.investVankaBot;
 
+
+
+import lombok.SneakyThrows;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import ru.tckachenko.investVankaBot.bot.ReactionToMessage;
 import ru.tckachenko.investVankaBot.config.SpringConfig;
-import ru.tckachenko.investVankaBot.workingByDatabase.LoadingHistoricalData;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
+@SpringBootApplication
+@EnableScheduling
 public class Main {
-    public static void main(String[] args) throws ParseException {
-        AnnotationConfigApplicationContext applicationContext =
-        new AnnotationConfigApplicationContext(SpringConfig.class);
-        LoadingHistoricalData loadingHistoricalData = applicationContext.getBean("loadingHistoricalData", LoadingHistoricalData.class);
-        try {
-            loadingHistoricalData.saitDataLoadDb();
-        }catch (Exception e){
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException ex) {
-            }
-        }
+    @SneakyThrows
+    public static void main(String[] args){
+        new TelegramBotsApi(DefaultBotSession.class).registerBot(new ReactionToMessage());
+        SpringApplication.run(Main.class, args);
     }
 }
