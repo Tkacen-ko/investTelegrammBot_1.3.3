@@ -1,15 +1,15 @@
 package ru.tckachenko.investVankaBot.bot.workingWithMessagesFromUser;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.tckachenko.investVankaBot.bot.workingWithMessagesFromUser.responseBase.*;
+import ru.tckachenko.investVankaBot.config.SpringConfig;
+import ru.tckachenko.investVankaBot.dataProcessor.TiketInformation;
+import ru.tckachenko.investVankaBot.workingByDatabase.getFromDatabase.GettingDataFromDatabase;
 
 import java.util.*;
 
 public class Defendant {
-
     public SendMessage batyaReshala(String masegeText, String chatID){
         if (getClassAnswer().get(masegeText)!=null){
             Answer answer = getClassAnswer().get(masegeText);
@@ -46,27 +46,33 @@ public class Defendant {
 
 
     public Map<String, Answer> getClassAnswer(){
+        List<TiketInformation> getNameTiker = new AnnotationConfigApplicationContext(SpringConfig.class)
+                .getBean(GettingDataFromDatabase.class).getDataToTikerRealTime();
         Map<String, Answer> defendant = new HashMap<>();
         defendant.put("/start", new StarterKit());
-        defendant.put("Базовые команды", new BasicComandKit());
-        defendant.put("Подписки", new SubscriptionsKit());
-        defendant.put("Лидеры падения", new SubscriptionsKit());
-        defendant.put("Лидеры роста", new LeadersGrowthKit());
-        defendant.put("TickerInfo", new TickerInfoKit());
-        defendant.put("Оформить подписку", new SubscribeKit());
-
-        defendant.put("TOP-Капиталистов", new PlugKit());
-        defendant.put("Растут сейчас", new PlugKit());
-        defendant.put("Растут неделю", new PlugKit());
-        defendant.put("Растут месяц", new PlugKit());
-        defendant.put("Растут год", new PlugKit());
-        defendant.put("Падают сейчас", new PlugKit());
-        defendant.put("Падают неделю", new PlugKit());
-        defendant.put("Падают месяц", new PlugKit());
-        defendant.put("Падают год", new PlugKit());
-        defendant.put("Изменить оповещения", new PlugKit());
-        defendant.put("Отменить подписку", new PlugKit());
-
+        defendant.put("базовые команды", new BasicComandKit());
+        defendant.put("подписки", new SubscriptionsKit());
+        defendant.put("лидеры падения", new SubscriptionsKit());
+        defendant.put("лидеры роста", new LeadersGrowthKit());
+        defendant.put("tickerinfo", new TickerInfoKit());
+        defendant.put("список тикеров", new ListTikersKit(getNameTiker));
+        defendant.put("оформить подписку", new SubscribeKit());
+        defendant.put("top50-капиталистов", new RatingCapitalistsKit());
+        defendant.put("растут сейчас", new PlugKit());
+        defendant.put("растут неделю", new PlugKit());
+        defendant.put("растут месяц", new PlugKit());
+        defendant.put("растут год", new PlugKit());
+        defendant.put("падают сейчас", new PlugKit());
+        defendant.put("падают неделю", new PlugKit());
+        defendant.put("падают месяц", new PlugKit());
+        defendant.put("падают год", new PlugKit());
+        defendant.put("изменить оповещения", new PlugKit());
+        defendant.put("отменить подписку", new PlugKit());
+        for(TiketInformation tiketInformation : getNameTiker){
+            if(tiketInformation.getTiket().length()!=0) {
+                defendant.put(tiketInformation.getTiket().toLowerCase().trim(), new DataAboutTikerKit(tiketInformation.getTiket().toLowerCase(), getNameTiker));
+            }
+        }
         return defendant;
     }
 

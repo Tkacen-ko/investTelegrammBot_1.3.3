@@ -13,7 +13,7 @@ import java.util.Date;
 @ComponentScan
 public class LoadingHistoricalData extends BasicLoadingFunctionalityBd{
     public static final String url = "https://smart-lab.ru/q/shares/order_by_issue_capitalization/desc/?date=";
-    private String dateFormatToBD = "19.06.2020"; // Дата для старта анализа
+    private String dateFormatToBD = "01.10.2021"; // Дата для старта анализа
     private Date dateStart;
     private static final Date nowDate = new Date();
 

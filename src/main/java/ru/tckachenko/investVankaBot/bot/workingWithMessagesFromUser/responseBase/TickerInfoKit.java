@@ -1,15 +1,19 @@
 package ru.tckachenko.investVankaBot.bot.workingWithMessagesFromUser.responseBase;
 
+import ru.tckachenko.investVankaBot.bot.workingWithMessagesFromUser.AnswerWithTextAndButtons;
 import ru.tckachenko.investVankaBot.bot.workingWithMessagesFromUser.AnswerWithTextOnly;
+import ru.tckachenko.investVankaBot.dataProcessor.TiketInformation;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class TickerInfoKit extends AnswerWithTextOnly {
-    public static final String message = "Отправьте ответным сообщением наименование тикера"+
+public class TickerInfoKit extends AnswerWithTextAndButtons {
+    public static String message = "Отправьте ответным сообщением наименование тикера"+
             "(короткое буквенное обозначение ценное бумаги (Например GAZP, SBER, YNDX)), "+
-            "о котором вы хотите получить информацию:";
+            "о котором вы хотите получить информацию:\n";
+    private List<String> buttons = Arrays.asList("Список тикеров");
     public List<String> getButtons() {
-        return null;
+        return buttons;
     }
     public String getMessage() {
         return message;

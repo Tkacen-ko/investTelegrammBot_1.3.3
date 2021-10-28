@@ -1,7 +1,11 @@
 package ru.tckachenko.investVankaBot.schedule;
+import lombok.SneakyThrows;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.tckachenko.investVankaBot.config.SpringConfig;
+import ru.tckachenko.investVankaBot.workingByDatabase.writingDatabase.LoadingHistoricalData;
+import ru.tckachenko.investVankaBot.workingByDatabase.writingDatabase.LoadingTodayData;
 
 
 @Component
@@ -10,9 +14,10 @@ public class WorkSchedule {
 
 
 //    @SneakyThrows
-//    @Scheduled(cron = "0/15 * * * * *")
+//    @Scheduled(cron = "0/1 * * * * *")
 //    public void prevetTron(){
-//        bean.getBean("sendMessageUserTelegtam", SendMessageUserTelegtam.class).execute(SendMessage.builder().chatId("891228156").text("Я шлю ПРИВЕТЫ каждые 15 секунд").build());
+//        new AnnotationConfigApplicationContext(SpringConfig.class)
+//                .getBean("loadingTodayData", LoadingTodayData.class).saitDataLoadDb();
 //    }
 //    @SneakyThrows
 //    @Scheduled(cron = "0/5 * * * * *")

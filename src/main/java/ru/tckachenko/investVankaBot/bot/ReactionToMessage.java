@@ -13,11 +13,11 @@ public class ReactionToMessage extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {
-            execute(new Defendant().batyaReshala(update.getMessage().getText(),
+            execute(new Defendant().batyaReshala(update.getMessage().getText().trim().toLowerCase(),
                     update.getMessage().getChatId().toString()));
         }
         if (update.hasCallbackQuery()){
-            execute(new Defendant().batyaReshala(update.getCallbackQuery().getData(),
+            execute(new Defendant().batyaReshala(update.getCallbackQuery().getData().trim().toLowerCase(),
                     update.getCallbackQuery().getMessage().getChatId().toString()));
         }
     }

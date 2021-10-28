@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import ru.tckachenko.investVankaBot.bot.ReactionToMessage;
 import ru.tckachenko.investVankaBot.bot.SendMessageUserTelegtam;
+import ru.tckachenko.investVankaBot.workingByDatabase.getFromDatabase.GettingDataFromDatabase;
 import ru.tckachenko.investVankaBot.workingByDatabase.writingDatabase.LoadingHistoricalData;
 import ru.tckachenko.investVankaBot.workingByDatabase.writingDatabase.LoadingTodayData;
 
@@ -41,8 +42,7 @@ public class SpringConfig {
     }
 
     @Bean
-    public LoadingTodayData loadingTodayData(){
-        return new LoadingTodayData(jdbcTemplate());
+    public LoadingTodayData loadingTodayData(){return new LoadingTodayData(jdbcTemplate());
     }
 
     @Bean
@@ -50,4 +50,7 @@ public class SpringConfig {
 
     @Bean
     public SendMessageUserTelegtam sendMessageUserTelegtam(){ return new SendMessageUserTelegtam(defaultBotOptions());}
+
+    @Bean
+    public GettingDataFromDatabase gettingDataFromDatabase(){return new GettingDataFromDatabase(jdbcTemplate());}
 }

@@ -66,6 +66,7 @@ public class LoadingTodayData extends BasicLoadingFunctionalityBd {
                     ")");
         }
         catch (Exception e){
+            System.out.println("При попытке создать таблицу что то ебнулось");
         }
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 public class BasicComandKit extends AnswerWithTextAndButtons {
     public String message = "Выберете необходимые для отображения данные:";
     public List<String> buttons = Arrays.asList("Лидеры роста",
-            "Лидеры падения", "TOP-Капиталистов", "TickerInfo");
+            "Лидеры падения", "TOP50-Капиталистов", "TickerInfo");
     public List<String> getButtons() {
         return buttons;
     }

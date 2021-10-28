@@ -3,10 +3,7 @@ package ru.tckachenko.investVankaBot.dataProcessor;
 import lombok.Data;
 
 @Data
-public class TiketInformation {
-    private String tiket;
-    private String nameCompany;
-    private String rankTiket;
+public class AllDataTikerRealTime {
     private int price;
     private double capitalizationmlrdru;
     private double capitalizationmlrddollars;
@@ -14,4 +11,4 @@ public class TiketInformation {
     private double changesweek;
     private double changesmonth;
     private double changesyear;
-    }
+}
