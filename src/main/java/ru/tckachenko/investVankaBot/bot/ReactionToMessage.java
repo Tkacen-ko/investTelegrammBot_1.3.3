@@ -5,6 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.tckachenko.investVankaBot.bot.workingWithMessagesFromUser.Defendant;
+import ru.tckachenko.investVankaBot.workingByDatabase.CheckingUser;
 
 @ComponentScan
 public class ReactionToMessage extends TelegramLongPollingBot {
@@ -13,6 +14,7 @@ public class ReactionToMessage extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {
+            new CheckingUser(update.getMessage()).check();
             execute(new Defendant().batyaReshala(update.getMessage().getText().trim().toLowerCase(),
                     update.getMessage().getChatId().toString()));
         }

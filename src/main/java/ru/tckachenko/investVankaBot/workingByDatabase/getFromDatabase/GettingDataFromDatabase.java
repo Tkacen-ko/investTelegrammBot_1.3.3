@@ -3,16 +3,14 @@ package ru.tckachenko.investVankaBot.workingByDatabase.getFromDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.jdbc.core.JdbcTemplate;
-import ru.tckachenko.investVankaBot.dataProcessor.AllDataTikerRealTime;
-import ru.tckachenko.investVankaBot.dataProcessor.AllDataTikerRealTimeMaper;
-import ru.tckachenko.investVankaBot.dataProcessor.TiketInformation;
-import ru.tckachenko.investVankaBot.dataProcessor.TiketInformationMapper;
+import ru.tckachenko.investVankaBot.dataProcessor.*;
 
 import java.util.List;
 
 @ComponentScan
 public class GettingDataFromDatabase {
-    private static List<TiketInformation> dataToTikerRealTime;
+    public static List<TiketInformation> dataToTikerRealTime;
+    public static List<UserData> userInformationRealTime;
     protected final JdbcTemplate jdbcTemplate;
     @Autowired
     public GettingDataFromDatabase(JdbcTemplate jdbcTemplate) {
@@ -42,14 +40,26 @@ public class GettingDataFromDatabase {
 
             }catch (Exception e){
                 System.out.println("\n!\nДанные по данному тикеру отсутствуют\n!\n");
-                //e.printStackTrace();
             }
         }
         dataToTikerRealTime = valuesWithoutCapitalization;
         return valuesWithoutCapitalization;
     }
+
     public List<TiketInformation> getDataToTikerRealTime(){
         return dataToTikerRealTime;
     }
-
+    public List<UserData> loadingUserData(){
+        List<UserData> valuesWithoutCapitalization = jdbcTemplate.query("SELECT * FROM userdata", new UserDataMapper());
+        userInformationRealTime = valuesWithoutCapitalization;
+        return valuesWithoutCapitalization;
+    }
+    public void updateUserTikerValue(double alertThresholdTikerGold, String id, String tikerTipe){
+        jdbcTemplate.update("UPDATE userdata SET alertThresholdTiker"+tikerTipe+"=? WHERE id=?",
+                alertThresholdTikerGold,id);
+    }
+    public void updateFrequencyNotifications(int notificationFrequency, String id){
+        jdbcTemplate.update("UPDATE userdata SET notificationFrequency=? WHERE id=?",
+                notificationFrequency,id);
+    }
 }
