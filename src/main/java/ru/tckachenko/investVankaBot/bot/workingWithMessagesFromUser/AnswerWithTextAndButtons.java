@@ -17,6 +17,7 @@ public abstract class AnswerWithTextAndButtons implements Answer {
                 .text(introductoryMessage)
                 .chatId(chatID)
                 .replyMarkup(InlineKeyboardMarkup.builder().keyboard(buttons).build())
+                .parseMode("Markdown")
                 .build();
     }
     public abstract List<String> getButtons();

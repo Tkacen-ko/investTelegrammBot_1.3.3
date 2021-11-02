@@ -12,6 +12,7 @@ public abstract class AnswerWithTextOnly implements Answer{
         return SendMessage.builder()
                 .text(getMessage())
                 .chatId(chatID)
+                .parseMode("Markdown")
                 .build();
     }
     public abstract List<String> getButtons();

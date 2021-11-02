@@ -20,7 +20,7 @@ import ru.tckachenko.investVankaBot.workingByDatabase.writingDatabase.LoadingTod
 public class Main {
     @SneakyThrows
     public static void main(String[] args){
-        new AnnotationConfigApplicationContext(SpringConfig.class).getBean(LoadingTodayData.class).saitDataLoadDb();
+        //new AnnotationConfigApplicationContext(SpringConfig.class).getBean(LoadingTodayData.class).saitDataLoadDb();
         new AnnotationConfigApplicationContext(SpringConfig.class).getBean(GettingDataFromDatabase.class).loadingDataToTikerRealTime();
         new AnnotationConfigApplicationContext(SpringConfig.class).getBean(GettingDataFromDatabase.class).loadingUserData();
         new TelegramBotsApi(DefaultBotSession.class).registerBot(new ReactionToMessage());

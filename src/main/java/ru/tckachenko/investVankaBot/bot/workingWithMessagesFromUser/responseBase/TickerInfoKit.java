@@ -10,7 +10,9 @@ import java.util.List;
 public class TickerInfoKit extends AnswerWithTextAndButtons {
     public static String message = "Отправьте ответным сообщением наименование тикера"+
             "(короткое буквенное обозначение ценное бумаги (Например GAZP, SBER, YNDX)), "+
-            "о котором вы хотите получить информацию:\n";
+            "о котором вы хотите получить информацию.\n" +
+            "Команда «*Список тикеров*» - отобразит 30 случайных тикеров доступных для получения" +
+            " данных.";
     private List<String> buttons = Arrays.asList("Список тикеров");
     public List<String> getButtons() {
         return buttons;

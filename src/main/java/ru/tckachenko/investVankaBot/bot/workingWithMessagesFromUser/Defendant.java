@@ -30,16 +30,16 @@ public class Defendant {
         defendant.put("/start", new StarterKit());
 
         defendant.put("базовые команды", new BasicComandKit());
-        defendant.put("подписки", new SubscriptionsKit());
+        defendant.put("подписки\uD83D\uDCE3", new SubscriptionsKit());
 
-        defendant.put("лидеры падения", new LeadersDeclineKit());
-        defendant.put("лидеры роста", new LeadersGrowthKit());
-        defendant.put("tickerinfo", new TickerInfoKit());
-        defendant.put("top50-капиталистов", new RatingCapitalistsKit());
+        defendant.put("лидеры падения\uD83D\uDCC9", new LeadersDeclineKit());
+        defendant.put("лидеры роста\uD83D\uDCC8", new LeadersGrowthKit());
+        defendant.put("ticker informationℹ", new TickerInfoKit());
+        defendant.put("top50-капиталистов\uD83D\uDD1D", new RatingCapitalistsKit());
 
         defendant.put("оформить подписку", new SubscribeKit());
         defendant.put("отменить подписку", new CancelSubscriptionKit());
-        defendant.put("изменить оповещения", new ChangeAlertsKit());
+        defendant.put("изменить частоту оповещений", new ChangeAlertsKit());
 
         defendant.put("список тикеров", new ListTikersKit(getNameTiker));
 

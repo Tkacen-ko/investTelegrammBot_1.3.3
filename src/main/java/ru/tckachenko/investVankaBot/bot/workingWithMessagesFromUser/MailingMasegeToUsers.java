@@ -48,11 +48,13 @@ public class MailingMasegeToUsers {
             if (message.length()!=0){
                 message = "Внимание!\n"+message;
             }
-            AnnotationConfigApplicationContext bean = new AnnotationConfigApplicationContext(SpringConfig.class);
-            bean.getBean(SendMessageUserTelegtam.class)
-                    .execute(SendMessage.builder()
-                            .chatId(userData.getId())
-                            .text(message).build());
+            if (message.length()!=0) {
+                AnnotationConfigApplicationContext bean = new AnnotationConfigApplicationContext(SpringConfig.class);
+                bean.getBean(SendMessageUserTelegtam.class)
+                        .execute(SendMessage.builder()
+                                .chatId(userData.getId())
+                                .text(message).build());
+            }
     }
 
     public String getFallGoldTiker(UserData userData){

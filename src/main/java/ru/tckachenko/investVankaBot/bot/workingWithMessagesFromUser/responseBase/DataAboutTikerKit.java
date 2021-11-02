@@ -19,21 +19,18 @@ public class DataAboutTikerKit extends AnswerWithTextOnly {
     @Override
     public String getMessage() {
         for(TiketInformation tiketInformation : getNameTiker){
-            System.out.println(tiketInformation.getTiket().toLowerCase());
-            System.out.println(tikerName);
-            System.out.println(tiketInformation.getTiket().toLowerCase().equals(tikerName));
             if(tiketInformation.getTiket().toLowerCase().equals(tikerName)){
-                return message = tiketInformation.getTiket() + " (" + tiketInformation.getNameCompany() + " )"+
+                return message = tiketInformation.getTiket() + "(" + tiketInformation.getNameCompany() + ") "+
                         "данный тикер относиться к категории "  + getRankTikerReaction(tiketInformation.getRankTiket())+
-                        "Сегодня данная ценная бумага показывает" + todayGrowth(tiketInformation.getChangesday())+"("+tiketInformation.getChangesday()+"), "+
-                        "в течении месяца происходит" + monshGrowth(tiketInformation.getChangesmonth())+"("+tiketInformation.getChangesmonth()+"), "+
-                       "а в течении год тикер "+ yearGrowth(tiketInformation.getChangesyear())+"("+tiketInformation.getChangesyear()+")." ;
+                        "Сегодня данная ценная бумага показывает " + todayGrowth(tiketInformation.getChangesday())+"("+tiketInformation.getChangesday()+"), "+
+                        "в течении месяца происходит " + monshGrowth(tiketInformation.getChangesmonth())+"("+tiketInformation.getChangesmonth()+"), "+
+                       "а в течении года тикер "+ yearGrowth(tiketInformation.getChangesyear())+"("+tiketInformation.getChangesyear()+")." ;
 
             }
         }
         //!пробижаться по все тикерам в переменной getNameTiker и в том случае если будет найдено совпадение вызвать то что нужно
 
-        return "Где то чет почему, сорян";
+        return "Где то чет почемут, сорян";
     }
     public String getRankTikerReaction(String RankTiker){
         switch(RankTiker) {
@@ -43,7 +40,7 @@ public class DataAboutTikerKit extends AnswerWithTextOnly {
                         "более высокой надёжностью.\n";
             case "silver":
             case "bronze":
-                return "капиталистов средней руки, соответственно " +
+                return "капиталистов средней уровня, соответственно " +
                         "может иметь средние и высокие колебания " +
                         "с стоимость акций на рынке.\n";
             case "dno":

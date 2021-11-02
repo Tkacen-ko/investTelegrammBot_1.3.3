@@ -25,7 +25,7 @@ public class WorkSchedule {
         }
     }
     @SneakyThrows
-    @Scheduled(cron = "0 0 9-20 * * MON-FRI")
+    @Scheduled(cron = "0 0 10-20 * * MON-FRI")
     public void hourlyAlerts() {
         for (UserData userData : GettingDataFromDatabase.userInformationRealTime) {
             if (userData.getNotificationFrequency() == 2) {
