@@ -38,7 +38,7 @@ public class Defendant {
         defendant.put("top50-капиталистов\uD83D\uDD1D", new RatingCapitalistsKit());
 
         defendant.put("оформить подписку", new SubscribeKit());
-        defendant.put("отменить подписку", new CancelSubscriptionKit());
+        defendant.put("отменить подписку", new CancelSubscriptionKit(0, chatID));
         defendant.put("изменить частоту оповещений", new ChangeAlertsKit());
 
         defendant.put("список тикеров", new ListTikersKit(getNameTiker));

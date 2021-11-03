@@ -22,7 +22,6 @@ public class GettingDataFromDatabase {
         List<TiketInformation> valuesWithoutCapitalization = jdbcTemplate.query("SELECT * FROM allinformationabouttiket ", new TiketInformationMapper());
         for (TiketInformation tiket : valuesWithoutCapitalization){
             String nameTiketToLowerCase = "today"+tiket.getTiket().toLowerCase();
-            System.out.println(nameTiketToLowerCase);
             AllDataTikerRealTime allDataTikerRealTime = null;
             try {
 

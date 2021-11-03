@@ -29,24 +29,24 @@ public class MailingMasegeToUsers {
         String message = "";
             System.out.println(getFallGoldTiker(userData));
             if(getFallGoldTiker(userData).length()!=0){
-                message += "Данные тикеры в категории Gold упали на указанный вами порог:\n";
+                message += "Данные тикер(-ы) в категории Gold\uD83E\uDD47 упали на указанный вами порог:\n";
                 message += getFallGoldTiker(userData);
             }
             System.out.println(getFallSilverTiker(userData).length());
             if(getFallSilverTiker(userData).length()!=0){
-                message += "\nДанные тикеры в категории Silver упали на указанный вами порог:\n";
+                message += "\nДанные тикер(-ы) в категории Silver\uD83E\uDD48 упали на указанный вами порог:\n";
                 message += getFallSilverTiker(userData);
             }
             if(getFallBronzeTiker(userData).length()!=0){
-                message += "\nДанные тикеры в категории Bronze упали на указанный вами порог:\n";
+                message += "\nДанные тикер(-ы) в категории Bronze\uD83E\uDD49 упали на указанный вами порог:\n";
                 message += getFallBronzeTiker(userData);
             }
             if(getFallDnoTiker(userData).length()!=0){
-                message += "\nДанные тикеры в категории Dno упали на указанный вами порог:\n";
+                message += "\nДанные тикер(-ы) в категории Dno\uD83C\uDFA2 упали на указанный вами порог:\n";
                 message += getFallDnoTiker(userData);
             }
             if (message.length()!=0){
-                message = "Внимание!\n"+message;
+                message = "    ‼*Внимание*‼\n*Падение стоимости* ценных бумаг, в рамках установленных вами порогов:\n"+message;
             }
             if (message.length()!=0) {
                 AnnotationConfigApplicationContext bean = new AnnotationConfigApplicationContext(SpringConfig.class);
@@ -58,7 +58,7 @@ public class MailingMasegeToUsers {
     }
 
     public String getFallGoldTiker(UserData userData){
-        num=1;
+
         return GettingDataFromDatabase.dataToTikerRealTime
                 .stream()
                 .filter(s-> s.getRankTiket().equals("gold"))
@@ -66,11 +66,11 @@ public class MailingMasegeToUsers {
                 .stream()
                 .sorted(new TiketInformationComparatorToCapitalizationmlrdru())
                 .filter(s->s.getChangesday()<(userData.getAlertThresholdTikerGold()*(-1)))
-                .map((p) -> (num++)+". " + p.getTiket() + " (" + p.getChangesday() + "%)\n").collect(Collectors.joining());
+                .map((p) -> " • " + p.getTiket() + " (" + p.getChangesday() + "%)\n").collect(Collectors.joining());
 
     }
     public String getFallSilverTiker(UserData userData){
-        num=1;
+
         return GettingDataFromDatabase.dataToTikerRealTime
                 .stream()
                 .filter(s-> s.getRankTiket().equals("silver"))
@@ -78,11 +78,11 @@ public class MailingMasegeToUsers {
                 .stream()
                 .sorted(new TiketInformationComparatorToCapitalizationmlrdru())
                 .filter(s->s.getChangesday()<(userData.getAlertThresholdTikerSilver()*(-1)))
-                .map((p) -> (num++)+". " + p.getTiket() + " (" + p.getChangesday() + "%)\n").collect(Collectors.joining());
+                .map((p) -> " • " + p.getTiket() + " (" + p.getChangesday() + "%)\n").collect(Collectors.joining());
 
     }
     public String getFallBronzeTiker(UserData userData){
-        num=1;
+
         return GettingDataFromDatabase.dataToTikerRealTime
                 .stream()
                 .filter(s-> s.getRankTiket().equals("bronze"))
@@ -90,7 +90,7 @@ public class MailingMasegeToUsers {
                 .stream()
                 .sorted(new TiketInformationComparatorToCapitalizationmlrdru())
                 .filter(s->s.getChangesday()<(userData.getAlertThresholdTikerBronze()*(-1)))
-                .map((p) -> (num++)+". " + p.getTiket() + " (" + p.getChangesday() + "%)\n").collect(Collectors.joining());
+                .map((p) -> " • " + p.getTiket() + " (" + p.getChangesday() + "%)\n").collect(Collectors.joining());
 
     }
     public String getFallDnoTiker(UserData userData){
@@ -101,7 +101,7 @@ public class MailingMasegeToUsers {
                 .stream()
                 .sorted(new TiketInformationComparatorToCapitalizationmlrdru())
                 .filter(s->s.getChangesday()<(userData.getAlertThresholdTikerDno()*(-1)))
-                .map((p) -> (num++)+". " + p.getTiket() + " (" + p.getChangesday() + "%)\n").collect(Collectors.joining());
+                .map((p) -> " • " + p.getTiket() + " (" + p.getChangesday() + "%)\n").collect(Collectors.joining());
 
     }
 

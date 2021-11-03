@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class AllDataTikerRealTime {
-    private int price;
+    private double price;
     private double capitalizationmlrdru;
     private double capitalizationmlrddollars;
     private double changesday;

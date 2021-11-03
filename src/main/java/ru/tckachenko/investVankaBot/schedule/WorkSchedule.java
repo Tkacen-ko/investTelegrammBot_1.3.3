@@ -13,7 +13,7 @@ import ru.tckachenko.investVankaBot.workingByDatabase.writingDatabase.LoadingTod
 @Component
 public class WorkSchedule {
     @SneakyThrows
-    @Scheduled(cron = "0 0/10 9-20 * * MON-FRI")
+    @Scheduled(cron = "0 0/10 11-20 * * MON-FRI")
     public void updatingDataAndNotificationVigilant() {
         new AnnotationConfigApplicationContext(SpringConfig.class).getBean(LoadingTodayData.class).saitDataLoadDb();
         new AnnotationConfigApplicationContext(SpringConfig.class).getBean(GettingDataFromDatabase.class).loadingDataToTikerRealTime();
@@ -25,7 +25,7 @@ public class WorkSchedule {
         }
     }
     @SneakyThrows
-    @Scheduled(cron = "0 0 10-20 * * MON-FRI")
+    @Scheduled(cron = "0 0 11-20 * * MON-FRI")
     public void hourlyAlerts() {
         for (UserData userData : GettingDataFromDatabase.userInformationRealTime) {
             if (userData.getNotificationFrequency() == 2) {
